@@ -4,55 +4,42 @@ import numpy as np
 import pickle
 import json
 from flask import Flask, render_template, request
-from flask_ngrok import run_with_ngrok
+from connection import create_app 
+
+# Uncomment the following line if needed
+# from flask_ngrok import run_with_ngrok
 import nltk
 from keras.models import load_model
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
 
+# Database connection and app creation
+app, mysql = create_app()
 
-# chat initialization
+# Chat initialization
 model = load_model("chatbot_model.h5")
-# intents = json.loads(open("intents.json").read())
-data_file = open("F:\\Data Science Course - IIITB\\NLP\\Chatbot\\AI Chatbot\\An-AI-Chatbot-in-Python-and-Flask-main\\intents.json").read()
 words = pickle.load(open("words.pkl", "rb"))
 classes = pickle.load(open("classes.pkl", "rb"))
+
+# Load and process the intents JSON file
+data_file = open("C:\Python Flask\AI-Chatbot\\intents.json").read()
+
 
 app = Flask(__name__)
 # run_with_ngrok(app) 
 
+# Flask app routes
 @app.route("/")
 def home():
     return render_template("index.html")
 
-
-# @app.route("/get", methods=["POST"])
-# def chatbot_response():
-#     msg = request.form["msg"]
-#     if msg.startswith('my name is'):
-#         name = msg[11:]
-#         ints = predict_class(msg, model)
-#         res1 = getResponse(ints, intents)
-#         res =res1.replace("{n}",name)
-#     elif msg.startswith('hi my name is'):
-#         name = msg[14:]
-#         ints = predict_class(msg, model)
-#         res1 = getResponse(ints, intents)
-#         res =res1.replace("{n}",name)
-#     else:
-#         ints = predict_class(msg, model)
-#         res = getResponse(ints, intents)
-#     return res
-#Updated
-
-# ... Your previous code ...
 
 @app.route("/get", methods=["POST"])
 def chatbot_response():
     msg = request.form["msg"]
 
     # Load and process the intents JSON file
-    data_file = open("F:\\Data Science Course - IIITB\\NLP\\Chatbot\\AI Chatbot\\An-AI-Chatbot-in-Python-and-Flask-main\\intents.json").read()
+    data_file = open("C:\Python Flask\AI-Chatbot\\intents.json").read()
     intents = json.loads(data_file)
 
     # Rest of your existing code
@@ -71,12 +58,11 @@ def chatbot_response():
         res = getResponse(ints, intents)
     return res
 
-# chat functionalities
+# Chat functionalities
 def clean_up_sentence(sentence):
     sentence_words = nltk.word_tokenize(sentence)
     sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
     return sentence_words
-
 
 # return bag of words array: 0 or 1 for each word in the bag that exists in the sentence
 def bow(sentence, words, show_details=True):
