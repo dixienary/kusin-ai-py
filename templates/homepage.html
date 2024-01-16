@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}" />
   <title>Kusin-AI - Home</title>
 </head>
 
@@ -14,9 +14,9 @@
     <!-- ... rest of the header content ... -->
     <nav>
       <ul>
-        <li><a href="homepage.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/homepage/about">About</a></li>
+        <li><a href="/homepage/contact">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -28,7 +28,7 @@
       cooking journey. Whether you're a seasoned home chef or just starting your culinary adventure, <br>our
       user-friendly
       platform is here to make your cooking experience delightful and hassle-free.</h2>
-    <a href="generator.html" class="get-started-btn">GET STARTED</a>
+    <a href="homepage/generator" class="get-started-btn">GET STARTED</a>
     <!-- Your home page content goes here -->
   </section>
 

@@ -4,9 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="generator-styles.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='generator-styles.css')}}" />
   <link rel="stylesheet" href="styles.css">
   <title>Kusin-AI Generator</title>
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -15,9 +17,9 @@
     <!-- ... rest of the header content ... -->
     <nav>
       <ul>
-        <li><a href="homepage.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/homepage/about">About</a></li>
+        <li><a href="/homepage/contact">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -37,9 +39,12 @@
 
     <section class="chat">
       <!-- Chat messages will appear here -->
+      <div id="chatbox" class="chatbox"></div>
       <div class="user-input">
-        <input type="text" placeholder="Type your message...">
-        <button>Send</button>
+        <form id="userForm">
+          <input type="text" id="text" placeholder="Type your message...">
+          <button type="submit">Send</button>
+        </form>
       </div>
     </section>
   </div>
@@ -47,6 +52,38 @@
   <footer>
     <p>&copy; 2023 Kusin-AI. All rights reserved.</p>
   </footer>
+
+  <!-- Include your existing script -->
+  <script>
+    $(document).ready(function () {
+      $("#userForm").on("submit", function (event) {
+        var rawText = $("#text").val();
+        var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+        $("#text").val("");
+        $("#chatbox").append(userHtml);
+        document.getElementById("text").scrollIntoView({
+          block: "start",
+          behavior: "smooth",
+        });
+        $.ajax({
+          data: {
+            msg: rawText,
+          },
+          type: "POST",
+          url: "/get",
+        }).done(function (data) {
+          var botHtml = '<p class="botText"><span>' + data + "</span></p>";
+          $("#chatbox").append($.parseHTML(botHtml));
+          document.getElementById("text").scrollIntoView({
+            block: "start",
+            behavior: "smooth",
+          });
+        });
+        event.preventDefault();
+      });
+    });
+  </script>
+
 </body>
 
 </html>

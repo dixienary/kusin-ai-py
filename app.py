@@ -4,18 +4,30 @@ import numpy as np
 import pickle
 import json
 from flask import Flask, render_template, request
-from connection import create_app 
 
-# Uncomment the following line if needed
-# from flask_ngrok import run_with_ngrok
+import mysql.connector
+from user_management import create_user, login_user
+
 import nltk
 from keras.models import load_model
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
 
-# Database connection and app creation
-app, mysql = create_app()
 
+# Connect to MySQL database
+conn = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='',
+    database='kusin-ai' 
+)
+
+# # Check if the connection is successful
+# if conn.is_connected():
+#     print("Connected to the MySQL database.")
+# else:
+#     print("Not connected to the MySQL database.")
+    
 # Chat initialization
 model = load_model("chatbot_model.h5")
 words = pickle.load(open("words.pkl", "rb"))
@@ -29,9 +41,36 @@ app = Flask(__name__)
 # run_with_ngrok(app) 
 
 # Flask app routes
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("homepage.html")
+
+@app.route("/homepage/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/homepage/contact")
+def contact():
+    return render_template("contact.html")
+
+@app.route("/homepage/generator")
+def generator():
+    return render_template("generator.html")
+
+@app.route("/signup", methods=["POST"])
+def signup():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    return create_user(email, password)
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    return login_user(email, password)
 
 
 @app.route("/get", methods=["POST"])
