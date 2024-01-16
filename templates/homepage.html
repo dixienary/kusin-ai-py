@@ -10,7 +10,7 @@
 
 <body>
   <header>
-    <img src="c:\ARLAN_PROGRAM\logo.png" alt="Kusin-AI Logo">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Kusin-AI Logo">
     <!-- ... rest of the header content ... -->
     <nav>
       <ul>
@@ -22,7 +22,7 @@
   </header>
 
   <section class="main-content">
-    <img src="c:\ARLAN_PROGRAM\logo.png" alt="Kusin-AI Logo">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Kusin-AI Logo">
     <h1>Welcome to Kusin-AI</h1>
     <h2>KUSIN-AI is your virtual kitchen assistant, harnessing the power of artificial intelligence <br>to simplify your
       cooking journey. Whether you're a seasoned home chef or just starting your culinary adventure, <br>our
