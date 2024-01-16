@@ -1,4 +1,5 @@
 body {
+<<<<<<< HEAD
   font-family: Garamond;
 }
 
@@ -165,3 +166,102 @@ button, input, optgroup, select, textarea {
   right: 0;
   width: 300px;
 }
+=======
+    font-family: source serif pro;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #D8F3DC;
+    color: #212121;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-left: 70px;
+  }
+  
+  nav ul li {
+    margin-right: 20px;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #212121;
+    font-weight: bold;
+  }
+  
+  .main-content {
+    padding: 24px;
+    text-align: center;
+  }
+  
+  .main-content img {
+    width: 240px;
+    height: 100px;
+  }
+  
+  .main-content h1 {
+    font-size: 48px;
+    font-family: source serif pro;
+    color: #212121;
+  }
+  
+  .main-content h2 {
+    font-size: 16px;
+    font-family: source serif pro;
+    font-weight: lighter;
+    text-align: center;
+    margin-bottom: 36px;
+    color: #212121;
+  }
+  
+  .get-started-btn {
+    font-size: 20px;
+    font-family: source serif pro;
+    font-weight: bold;
+    text-align: center;
+    background-color: #3DAC78;
+    border: none;
+    border-radius: 50px;
+    width: 200px;
+    height: 40px;
+    margin-top: 32px;
+    cursor: pointer;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #212121;
+  }
+  
+  .get-started-btn:hover {
+    background-color: #45a049;
+  }
+  
+  
+  
+  
+  footer {
+    background-color: #D8F3DC;
+    color: #212121;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  header img {
+    width: 100px;
+    /* Set the desired width */
+    height: auto;
+    /* Maintain aspect ratio (auto adjusts height based on width) */
+  }
+>>>>>>> cae35751103e4c1a7419ebffa8072580a31e04e2
