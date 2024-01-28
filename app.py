@@ -3,15 +3,15 @@ import random
 import numpy as np
 import pickle
 import json
-from flask import Flask, render_template, request
-
-import mysql.connector
-from user_management import create_user, login_user
-
 import nltk
 from keras.models import load_model
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
+
+from flask import Flask, render_template, request, redirect, session, url_for
+import mysql.connector
+from user_management import create_user, login_user
+
 
 
 # Connect to MySQL database
@@ -19,14 +19,14 @@ conn = mysql.connector.connect(
     host='localhost',
     user='root',
     password='',
-    database='kusin-ai' 
+    database='kusin-ai'
 )
 
-# # Check if the connection is successful
-# if conn.is_connected():
-#     print("Connected to the MySQL database.")
-# else:
-#     print("Not connected to the MySQL database.")
+# Check if the connection is successful
+if conn.is_connected():
+    print("Connected to the MySQL database.")
+else:
+    print("Not connected to the MySQL database.")
     
 # Chat initialization
 model = load_model("chatbot_model.h5")
@@ -38,39 +38,65 @@ data_file = open("C:\Python Flask\AI-Chatbot\\intents.json").read()
 
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # You can use any string as your secret key
 # run_with_ngrok(app) 
 
 # Flask app routes
 
 @app.route("/")
-def home():
-    return render_template("homepage.html")
+def loginSignup():
+    return render_template("login-signup.html")
 
-@app.route("/homepage/about")
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+        response = login_user(conn, email, password)
+        if response == "Login successful":
+            session['user_email'] = email  # Store user email in session
+            return redirect("/generator")
+        else:
+            return render_template("login.html", error=response)
+    return render_template("login.html")
+
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        
+        # Call create_user function from user_management.py
+        response = create_user(conn, email, password, confirm_password)
+        
+        if response == "User created successfully":
+            return redirect("/")
+        else:
+            # Handle error (e.g., return to signup with an error message)
+            return render_template("signup.html", error=response)
+    return render_template("signup.html")
+
+        
+
+@app.route("/generator")
+def home():
+    return render_template("generator.html")
+
+
+@app.route("/generator/about")
 def about():
     return render_template("about.html")
 
-@app.route("/homepage/contact")
+@app.route("/generator/contact")
 def contact():
     return render_template("contact.html")
 
-@app.route("/homepage/generator")
-def generator():
-    return render_template("generator.html")
-
-@app.route("/signup", methods=["POST"])
-def signup():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
-    return create_user(email, password)
-
-@app.route("/login", methods=["POST"])
-def login():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
-    return login_user(email, password)
+@app.route("/logout")
+def logout():
+    session.clear()  # Clear the session if you are using it
+    return redirect("/login-signup")
 
 
 @app.route("/get", methods=["POST"])

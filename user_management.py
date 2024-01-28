@@ -1,40 +1,46 @@
-# user_management.py
-
 import bcrypt
-from flask import request, jsonify
+from mysql.connector import Error
 
-def create_user(email, password):
-    cursor = conn.cursor()
+def create_user(conn, email, password, confirm_password):
+    if password != confirm_password:
+        return "Passwords do not match"
 
-    # Hash the password before storing it in the database
-    password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
+    # Check if email already exists
     try:
-        # Insert user details into the 'users' table
-        cursor.execute("INSERT INTO users (email, password_hash) VALUES (%s, %s)",
-                       (email, password_hash))
+        cursor = conn.cursor()
+        cursor.execute("SELECT email FROM users WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return "Email already exists. Please use a different email."
+        
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        cursor.execute("INSERT INTO users (email, password_hash) VALUES (%s, %s)", (email, hashed_password))
         conn.commit()
-        return jsonify({'success': True, 'message': 'User created successfully'})
-    except Exception as e:
-        conn.rollback()
-        return jsonify({'success': False, 'message': str(e)})
+        return "User created successfully"
+    except Error as e:
+        return f"Error creating user: {e}"
     finally:
         cursor.close()
 
-def login_user(email, password):
-    cursor = conn.cursor()
-
+def login_user(conn, email, password):
     try:
-        # Retrieve hashed password from the database based on the provided email
-        cursor.execute("SELECT user_id, password_hash FROM users WHERE email = %s", (email,))
-        user_data = cursor.fetchone()
+        cursor = conn.cursor()
+        cursor.execute("SELECT password_hash FROM users WHERE email = %s", (email,))
+        result = cursor.fetchone()
+        if not result:
+            return "Account does not exist"
+        
+        stored_password = result[0]
+        # Ensure stored_password is in bytes
+        if isinstance(stored_password, str):
+            stored_password = stored_password.encode('utf-8')
 
-        if user_data and bcrypt.checkpw(password.encode('utf-8'), user_data[1].encode('utf-8')):
-            # Successful login
-            return jsonify({'success': True, 'user_id': user_data[0], 'message': 'Login successful'})
+        if bcrypt.checkpw(password.encode('utf-8'), stored_password):
+            return "Login successful"
         else:
-            return jsonify({'success': False, 'message': 'Invalid credentials'})
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)})
+            return "Wrong password or email"
+    except Error as e:
+        return f"Error during login: {e}"
     finally:
         cursor.close()
+
