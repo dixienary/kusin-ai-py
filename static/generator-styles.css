@@ -1,5 +1,5 @@
 body {
-  font-family: source serif pro;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -68,23 +68,19 @@ input {
 
 button {
   padding: 10px;
-  background-color: #4CAF50;
-  color: white;
+  background-color: #45a049;
+  color: #212121;
   border: 1px solid #4CAF50;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
 }
 
 .new-chat-btn {
-  background-color: #2196F3;
-  color: white;
+  background-color: #45a049;
+  color: #212121;
   border: none;
   padding: 10px;
   margin: 0;
   border-radius: 5px;
   cursor: pointer;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> cae35751103e4c1a7419ebffa8072580a31e04e2
