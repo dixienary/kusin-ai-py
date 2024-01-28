@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 body {
   display: flex;
   align-items: center;
@@ -58,67 +57,3 @@ button:hover {
   background-color: #4CAF50;
   color: #fff;
 }
-
-=======
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-}
-
-.container {
-  text-align: center;
-  max-width: 400px;
-  margin: auto;
-}
-
-.container img {
-  width: 240px;
-  height: 100px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-form label {
-  margin-bottom: 8px;
-}
-
-form input {
-  padding: 8px;
-  margin-bottom: 16px;
-  width: 100%;
-}
-
-.buttons {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-around;
-}
-
-button {
-  padding: 10px;
-  background-color: #45a049;
-  color: #212121;
-  border: 1px solid #4CAF50;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Arial', sans-serif;
-  font-weight: bold;
-  font-size: 16px;
-  /* Adjust the font size as needed */
-}
-
-button:hover {
-  background-color: #4CAF50;
-  color: #fff;
-}
-
->>>>>>> ed604560a1f351ffa538daa1e13cb0be89929657
-/* Add any additional styles as needed */
