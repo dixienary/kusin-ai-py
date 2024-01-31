@@ -9,6 +9,7 @@ from tensorflow.keras.optimizers import SGD
 from keras.layers import Dense, Dropout
 from keras.models import Sequential, load_model
 
+
 # Download NLTK resources
 nltk.download('omw-1.4')
 nltk.download("punkt")
@@ -132,3 +133,4 @@ hist = model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5,
 # Save the model
 model.save("chatbot_model.h5", hist)
 print("Model created and trained")
+

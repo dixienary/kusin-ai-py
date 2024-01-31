@@ -79,7 +79,6 @@ def signup():
     return render_template("signup.html")
 
         
-
 @app.route("/generator")
 def home():
     return render_template("generator.html")
@@ -146,8 +145,8 @@ def bow(sentence, words, show_details=True):
 
 
 def predict_class(sentence, model):
-    # filter out predictions below a threshold
     p = bow(sentence, words, show_details=False)
+    print("Length of input vector:", len(p))  # Debugging statement
     res = model.predict(np.array([p]))[0]
     ERROR_THRESHOLD = 0.25
     results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
@@ -171,4 +170,3 @@ def getResponse(ints, intents_json):
 
 if __name__ == "__main__":
     app.run()
-
